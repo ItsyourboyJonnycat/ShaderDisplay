@@ -14,7 +14,9 @@ import lime.app.Application;
 import lime.system.System;
 import android.*;
 #end
-
+import openfl.display.StageScaleMode;
+import ClientPrefs; 
+import openfl.Lib; 
 class Main extends Sprite
 {
 	var gameWidth:Int = 1280; // Width of the game in pixels (might be less / more in actual pixels depending on your zoom).
