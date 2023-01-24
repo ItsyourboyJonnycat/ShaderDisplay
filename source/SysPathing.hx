@@ -22,7 +22,7 @@ class SysPathing
 	public static function getPath(daPath:String):String
 	{
 		var daPathReal:String = daPath;
-		#if android
+		#if (android||ios)
 		daPathReal = "/" + daPath;
 		#elseif windows
 		daPathReal = "C:/Users/" + Sys.environment()["USERNAME"] + daPath;
