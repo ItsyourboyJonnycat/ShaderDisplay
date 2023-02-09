@@ -1,7 +1,7 @@
 package; 
 import openfl.filters.ShaderFilter;
 import flixel.FlxG;
-import tools.FlxShader; 
+import FlxShader; 
  
 class CrtEffect {
     public var shader:CrtShader;
