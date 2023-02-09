@@ -34,24 +34,39 @@ class Main extends Sprite
     #end
 
 	// You can pretty much ignore everything from here on - your code should go in your states.
-
+   
 	public static function main():Void
 	{
-		Lib.current.addChild(new Main());
+		Lib.current.addChild(new Main()); //DO NOT DELETE THIS CODE!!!!
 	}
 
 	public function new()
 	{
 		super();
 
-		if (stage != null)
+		var stageWidth:Int = Lib.current.stage.stageWidth;
+		var stageHeight:Int = Lib.current.stage.stageHeight;
+
+		if (zoom == -1)
 		{
-			init();
+			var ratioX:Float = stageWidth / gameWidth;
+			var ratioY:Float = stageHeight / gameHeight;
+			zoom = Math.min(ratioX, ratioY);
+			gameWidth = Math.ceil(stageWidth / zoom);
+			gameHeight = Math.ceil(stageHeight / zoom);
 		}
-		else
-		{
-			addEventListener(Event.ADDED_TO_STAGE, init);
-		}
+
+		addChild(new FlxGame(gameWidth, gameHeight, initialState, #if (flixel < "5.0.0")zoom,#end  framerate, framerate, skipSplash, startFullscreen));
+
+#if !mobile
+ fpsVar = new FPS(10, 3, 0xFFFFFF);
+ addChild(fpsVar);
+ Lib.current.stage.align = "tl";
+ Lib.current.stage.scaleMode = StageScaleMode.NO_SCALE;
+ if(fpsVar != null) {
+ 	fpsVar.visible = ClientPrefs.showFPS;
+ }
+ #end
 	}
 
         static public function getDataPath():String
@@ -70,41 +85,4 @@ class Main extends Sprite
                 return "";
 	        #end
         }
-
-	private function init(?E:Event):Void
-	{
-		if (hasEventListener(Event.ADDED_TO_STAGE))
-		{
-			removeEventListener(Event.ADDED_TO_STAGE, init);
-		}
-
-		setupGame();
-	}
-
-	private function setupGame():Void
-	{
-		var stageWidth:Int = Lib.current.stage.stageWidth;
-		var stageHeight:Int = Lib.current.stage.stageHeight;
-
-		if (zoom == -1)
-		{
-			var ratioX:Float = stageWidth / gameWidth;
-			var ratioY:Float = stageHeight / gameHeight;
-			zoom = Math.min(ratioX, ratioY);
-			gameWidth = Math.ceil(stageWidth / zoom);
-			gameHeight = Math.ceil(stageHeight / zoom);
-		}
-
-		addChild(new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen));
-
-#if !mobile
- fpsVar = new FPS(10, 3, 0xFFFFFF);
- addChild(fpsVar);
- Lib.current.stage.align = "tl";
- Lib.current.stage.scaleMode = StageScaleMode.NO_SCALE;
- if(fpsVar != null) {
- 	fpsVar.visible = ClientPrefs.showFPS;
- }
- #end
-	}
 }
